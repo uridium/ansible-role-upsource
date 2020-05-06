@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: upsource
+  author: Dariusz Lisiak
+  description: Install and configure Upsource - automated code review and project analytics tool.
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - stretch
+  galaxy_tags:
+    - upsource
+    - codereview
+    - java
+    - development
+    - jetbrains
+
+dependencies: []

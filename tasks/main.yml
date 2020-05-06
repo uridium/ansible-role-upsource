@@ -1,0 +1,90 @@
+---
+- name: Create Upsource base directory
+  file:
+    path: '{{ upsource_basedir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create Upsource group
+  group:
+    name: '{{ upsource_group }}'
+
+- name: Create Upsource user
+  user:
+    name: '{{ upsource_user }}'
+    group: '{{ upsource_group }}'
+    home: '{{ upsource_workdir }}'
+    createhome: no
+    shell: /usr/sbin/nologin
+
+- name: Configure backports repository
+  apt_repository:
+    repo: 'deb http://deb.debian.org/debian {{ ansible_distribution_release }}-backports main'
+    filename: backports
+    update_cache: yes
+
+- name: Install requirements
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - openjdk-11-jre-headless
+    - unzip
+
+- name: Unzip Upsource
+  unarchive:
+    src: '{{ upsource_download_url }}'
+    dest: '{{ upsource_basedir }}'
+    remote_src: yes
+    owner: '{{ upsource_user }}'
+    group: '{{ upsource_group }}'
+    creates: '{{ upsource_workdir }}-{{ upsource_version }}'
+
+- name: Create symlink to Upsource working directory
+  file:
+    src: '{{ upsource_workdir }}-{{ upsource_version }}'
+    dest: '{{ upsource_workdir }}'
+    state: link
+
+- name: Configure Upsource JVM options
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: '{{ upsource_user }}'
+    group: '{{ upsource_group }}'
+  with_items:
+    - { src: 'upsource.jvmoptions', dest: '{{ upsource_workdir }}/conf/' }
+    - { src: 'upsource-frontend.jvmoptions', dest: '{{ upsource_workdir }}/conf/upsource-frontend/' }
+    - { src: 'cassandra.jvmoptions', dest: '{{ upsource_workdir }}/conf/cassandra/' }
+
+- name: Adjust Upsource resource limits
+  pam_limits:
+    domain: '{{ item.domain }}'
+    limit_type: '{{ item.limit_type }}'
+    limit_item: '{{ item.limit_item }}'
+    value: '{{ item.value }}'
+  with_items:
+    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'memlock', value: '{{ upsource_memlock }}' }
+    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'nofile', value: '{{ upsource_nofile }}' }
+    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'nproc', value: '{{ upsource_nproc }}' }
+    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'as', value: '{{ upsource_as }}' }
+
+- name: Configure Upsource systemd
+  template:
+    src: upsource.service.j2
+    dest: /etc/systemd/system/upsource.service
+    mode: 0644
+  when: 'ansible_service_mgr == "systemd"'
+  notify: Restart Upsource
+
+- name: Restart Upsource right after configuring
+  meta: flush_handlers
+
+- name: Ensure Upsource service is enabled and started
+  systemd:
+    name: upsource
+    state: started
+    enabled: yes
+  notify: Wait for Upsource to start

@@ -1,0 +1,15 @@
+---
+upsource_version: '2019.1.1644'
+upsource_download_url: 'https://download.jetbrains.com/upsource/upsource-{{ upsource_version }}.zip'
+
+upsource_basedir: '/opt'
+upsource_workdir: '{{ upsource_basedir }}/upsource'
+upsource_lsb_script: '{{ upsource_workdir }}/bin/upsource.sh'
+
+upsource_user: 'upsource'
+upsource_group: 'upsource'
+
+upsource_memlock: unlimited
+upsource_nofile: 100000
+upsource_nproc: 32768
+upsource_as: unlimited

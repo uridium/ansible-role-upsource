@@ -1,0 +1,14 @@
+---
+- name: Restart Upsource
+  systemd:
+    name: upsource
+    state: restarted
+    daemon_reload: yes
+  notify: Wait for Upsource to start
+
+- name: Wait for Upsource to start
+  wait_for:
+    port=8080
+    delay=5
+    sleep=1
+    timeout=300
