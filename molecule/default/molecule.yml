@@ -24,6 +24,9 @@ platforms:
     privileged: True
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      stdout_callback: yaml
 verifier:
   name: ansible
 lint: |
