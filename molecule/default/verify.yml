@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: all
+  vars_files:
+    - '../../defaults/main.yml'
+  tasks:
+  - name: Stat Upsource jvmoptions file
+    stat:
+      path: '{{ upsource_workdir }}/conf/upsource.jvmoptions'
+    register: jvmoptions_file
+
+  - name: Assert that the file is in the expected state
+    assert:
+      that:
+        - jvmoptions_file.stat.isreg
+        - jvmoptions_file.stat.pw_name == '{{ upsource_user }}'
+        - jvmoptions_file.stat.gr_name == '{{ upsource_group }}'
+        - jvmoptions_file.stat.mode == "0644"
+
+  - name: Read Upsource jvmoptions file
+    command: 'cat {{ upsource_workdir }}/conf/upsource.jvmoptions'
+    register: jvmoptions_content
+    changed_when: False
+
+  - name: Assert that the file contains the expected string
+    assert:
+      that:
+        - '"-Xmx" in jvmoptions_content.stdout'
