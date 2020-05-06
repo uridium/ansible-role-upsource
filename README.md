@@ -1,6 +1,6 @@
 Ansible role: Upsource
 =========
-[![Build Status](https://travis-ci.org/uridium/ansible-role-upsource.svg?branch=master)](https://travis-ci.org/uridium/ansible-role-upsource)
+[![Build Status](https://travis-ci.org/uridium/ansible-role-upsource.svg)](https://travis-ci.org/uridium/ansible-role-upsource)
 [![Galaxy](https://img.shields.io/badge/galaxy-uridium.upsource-blue.svg)](https://galaxy.ansible.com/uridium/upsource)
 
 An Ansible role that installs and configures Upsource service on Debian systems.
