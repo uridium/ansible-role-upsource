@@ -8,7 +8,6 @@ platforms:
     image: uridium/debian-systemd:stable
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    pull: False
     command: /sbin/init
     environment:
       container: docker
@@ -17,7 +16,6 @@ platforms:
     image: uridium/debian-systemd:stretch
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    pull: False
     command: /sbin/init
     environment:
       container: docker
