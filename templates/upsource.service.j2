@@ -1,7 +1,7 @@
 [Unit]
 Description=Upsource service
 Requires=network.target
-After=network.target
+After=syslog.target network.target
 
 [Service]
 Type=simple
@@ -10,8 +10,7 @@ Group={{ upsource_group }}
 ExecStart={{ upsource_lsb_script }} start
 ExecStop={{ upsource_lsb_script }} stop
 ExecReload={{ upsource_lsb_script }} restart
-PIDFile={{ upsource_workdir }}/bin/upsource.pid
-Restart=always
+PIDFile={{ upsource_workdir }}/logs/upsource.pid
 
 [Install]
 WantedBy=multi-user.target
