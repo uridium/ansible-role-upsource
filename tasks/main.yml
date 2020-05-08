@@ -88,3 +88,21 @@
     state: started
     enabled: yes
   notify: Wait for Upsource to start
+
+- name: Get Upsource URL
+  command: >
+    awk -F'[][]' '/wizard_token/{print $4}' {{ upsource_workdir }}/logs/upsource-stdout.log
+  register: upsource_url
+  changed_when: False
+
+- name: Print the summary
+  vars:
+    txt: |
+      Down below is the URL to your Upsource Configuration Wizard:
+
+      ****    {{ upsource_url.stdout }}    ****
+
+      There are a couple of things to configure after the first start.
+      You can follow the walk-through described here: https://www.jetbrains.com/help/upsource/configuration-wizard.html
+  debug:
+    msg: "{{ txt.split('\n') }}"
