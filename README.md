@@ -55,6 +55,7 @@ Example Playbook
 
       roles:
         - role: uridium.upsource
+          upsource_basedir: '/data'
 ```
 
 License
