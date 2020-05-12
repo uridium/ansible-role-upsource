@@ -89,6 +89,11 @@
     enabled: yes
   notify: Wait for Upsource to start
 
+- name: Wait for wizard_token to generate
+  wait_for:
+    path: '{{ upsource_workdir }}/logs/upsource-stdout.log'
+    search_regex: wizard_token
+
 - name: Get Upsource URL
   command: >
     awk -F'[][]' '/wizard_token/ {url=$4} END {print url}' '{{ upsource_workdir }}/logs/upsource-stdout.log'
