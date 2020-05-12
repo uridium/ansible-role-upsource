@@ -91,7 +91,7 @@
 
 - name: Get Upsource URL
   command: >
-    awk -F'[][]' '/wizard_token/ {url=$4} END {print url}' {{ upsource_workdir }}/logs/upsource-stdout.log
+    awk -F'[][]' '/wizard_token/ {url=$4} END {print url}' '{{ upsource_workdir }}/logs/upsource-stdout.log'
   register: upsource_url
   changed_when: False
 
