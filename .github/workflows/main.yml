@@ -1,5 +1,5 @@
 ---
-name: Molecule Test
+name: test-and-release
 on:
   push:
     tags:
