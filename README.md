@@ -48,14 +48,14 @@ Example Playbook
 ----------------
 
 ```yaml
-    - hosts: upsource.host
-      remote_user: admin
-      become: True
-      gather_facts: True
+- hosts: upsource.host
+  remote_user: admin
+  become: True
+  gather_facts: True
 
-      roles:
-        - role: uridium.upsource
-          upsource_basedir: '/data'
+  roles:
+    - role: uridium.upsource
+      upsource_basedir: '/data'
 ```
 
 License
