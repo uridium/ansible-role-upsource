@@ -59,18 +59,6 @@
     - { src: 'upsource-frontend.jvmoptions', dest: '{{ upsource_workdir }}/conf/upsource-frontend/' }
     - { src: 'cassandra.jvmoptions', dest: '{{ upsource_workdir }}/conf/cassandra/' }
 
-- name: Adjust Upsource resource limits
-  pam_limits:
-    domain: '{{ item.domain }}'
-    limit_type: '{{ item.limit_type }}'
-    limit_item: '{{ item.limit_item }}'
-    value: '{{ item.value }}'
-  with_items:
-    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'memlock', value: '{{ upsource_memlock }}' }
-    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'nofile', value: '{{ upsource_nofile }}' }
-    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'nproc', value: '{{ upsource_nproc }}' }
-    - { domain: '{{ upsource_user }}', limit_type: '-', limit_item: 'as', value: '{{ upsource_as }}' }
-
 - name: Configure Upsource systemd
   template:
     src: upsource.service.j2

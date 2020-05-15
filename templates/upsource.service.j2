@@ -1,6 +1,5 @@
 [Unit]
 Description=Upsource service
-Requires=network.target
 After=syslog.target network.target
 
 [Service]
@@ -11,6 +10,10 @@ ExecStart={{ upsource_lsb_script }} start
 ExecStop={{ upsource_lsb_script }} stop
 ExecReload={{ upsource_lsb_script }} restart
 PIDFile={{ upsource_workdir }}/logs/upsource.pid
+LimitAS={{ upsource_as }}
+LimitMEMLOCK={{ upsource_memlock }}
+LimitNOFILE={{ upsource_nofile }}
+LimitNPROC={{ upsource_nproc }}
 
 [Install]
 WantedBy=multi-user.target
