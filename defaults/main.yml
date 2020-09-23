@@ -1,5 +1,5 @@
 ---
-upsource_version: '2019.1.1644'
+upsource_version: '2020.1.1802'
 upsource_download_url: 'https://download.jetbrains.com/upsource/upsource-{{ upsource_version }}.zip'
 
 upsource_basedir: '/opt'
