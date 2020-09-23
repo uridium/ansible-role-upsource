@@ -4,7 +4,7 @@ galaxy_info:
   author: Dariusz Lisiak
   description: Install and configure Upsource - automated code review and project analytics tool.
   license: MIT
-  min_ansible_version: 2.8
+  min_ansible_version: 2.9
   platforms:
     - name: Debian
       versions:
